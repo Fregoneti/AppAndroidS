@@ -35,6 +35,10 @@
             android:label="@string/formu"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name="views.AboutActivity"
+            android:label="@string/about"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
 

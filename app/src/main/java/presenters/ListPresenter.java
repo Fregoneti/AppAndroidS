@@ -16,13 +16,11 @@ public class ListPresenter implements IList.Presenter {
     }
 
     @Override
-    public void onClickSearchButton() {
-        view.startSearchActivity();
+    public void onClickSearchButton() {view.startSearchActivity();
     }
 
     @Override
-    public void onClickAboutButton() {
-        view.startAboutActivity();
+    public void onClickAboutButton() {view.startAboutActivity();
 
     }
 }

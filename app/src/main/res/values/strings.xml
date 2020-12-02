@@ -2,7 +2,7 @@
 
     <string name="app_name" translatable="false">Foro de Preguntas</string>
     <string name="splash">SplashScreen</string>
-    <string name="search">Search</string>
+
     <string name="formu">Form</string>
 
     <string name="action_settings">Settings</string>
@@ -31,13 +31,14 @@
     <string name="color">Colour</string>
     <string name="clean">Clean Image</string>
     <string name="image">Image</string>
-
+    <string name="search">Search</string>
     <string name="username">User Name</string>
-    <string name="spinner" translatable="false">Spinner</string>
+    <string name="spinner">Spinner</string>
     <string name="devel">Developer</string>
+    <string name="add" translatable="false">+</string>
 
     <string name="developer">Carlos Aguilar</string>
-    <string name="ccontacto">Mail</string>
+    <string name="ccontacto" translatable="false">Mail</string>
     <string name="devemail">carlosaguilaralfere@gmail.com</string>
 
 
@@ -49,4 +50,10 @@
 
 
     <string name="next">Next</string>
+    <string name="name_error">Error Name</string>
+    <string name="date_error">Error date</string>
+    <string name="mail_error">Error mail</string>
+    <string name="tittle_error">Error tittle</string>
+    <string name="colour_error">Error colour</string>
+    <string name="question_error">Error Question</string>
 </resources>

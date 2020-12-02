@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
 
     @Override
     public void startAboutActivity() {
-        Intent intent = new Intent(MainActivity.this, FormularioActivity.class);
+        Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
     }
 

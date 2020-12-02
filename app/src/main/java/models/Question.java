@@ -56,15 +56,18 @@ public class Question {
 
         date=day+"/"+month+"/"+year;
         boolean res;
-        res=validarFecha(fecha);
+     /*  res=validarFecha(date);
         if(res==true){
             System.out.println("La fecha es valida");
             this.date=date;
         }else
             System.out.println("La fecha no es valida");
+
+
+      */
     }
 
-    public void setTittle(String tittle) {
+    public boolean setTittle(String tittle) {
          valid=false;
         if(tittle!=""){
             this.tittle=tittle;
@@ -75,6 +78,7 @@ public class Question {
             valid=false;
             System.out.println("Error al introducir titulo");
         }
+        return valid;
     }
 
 
@@ -123,7 +127,8 @@ public class Question {
 
         public boolean setName (String name){
              valid = false;
-            if (name != "") {
+             String s="";
+            if (!(name.equals(s))) {
                 this.name = name;
 
                 valid = true;
@@ -168,4 +173,5 @@ public class Question {
         }
         return valid;
     }
+
 }

@@ -28,4 +28,15 @@
     <string name="image">Imagen</string>
     <string name="username">Usuario</string>
     <string name="datem" translatable="false">DD/MM/AAAA</string>
+    <string name="question_error" translatable="false">Error en la Pregunta</string>
+    <string name="colour_error" translatable="false">Error en el color</string>
+    <string name="tittle_error" translatable="false">Error en el titulo</string>
+    <string name="mail_error" translatable="false">Error en el mail</string>
+    <string name="name_error">Error en el nombre</string>
+    <string name="date_error" translatable="false">Error en la fecha</string>
+    <string name="devel" translatable="false">Desarrollador</string>
+    <string name="developer" translatable="false">Carlos Aguilar</string>
+    <string name="ccontacto" translatable="false">Correo</string>
+    <string name="devemail">carlosaguilaralfere@gmail.com</string>
+    <string name="spinner" translatable="false">Spinner</string>
 </resources>

@@ -4,17 +4,18 @@ public interface IFormulario {
 
     public interface View {
 
+        void onGoBack();
 
-        void startAboutActivity();
+        void addSpinnerOption();
     }
 
     public interface Presenter {
 
+        void goBack();
 
-        void onClickAboutButton();
-
-        void onGetError();
+        String getError(String error);
 
 
+        void onClickAddSpinnerOption();
     }
 }

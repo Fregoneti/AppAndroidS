@@ -2,22 +2,13 @@ package views;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-
 import com.example.demo.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,10 +16,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-
 import java.util.Calendar;
-
-import interfaces.IList;
 import interfaces.ISearch;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
@@ -93,7 +81,8 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         // Asignar la fecha a un campo de texto
-                        editTextDate.setText(String.valueOf(day) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+                        //editTextDate.setText(String.valueOf(day) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
+                        editTextDate.setText((day) + "/" +(month+1) + "/" + (year));
                     }
                 }, Year, Month, Day);
                 // Mostrar el calendario
@@ -126,15 +115,18 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     }
 
 
-    @Override
-    public void startAboutActivity() {
-
-    }
 
     @Override
     public void goBack() {
-        Intent intent = new Intent(SearchActivity.this, MainActivity.class);
-        startActivity(intent);
+      finish();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+
+        return true;
     }
 
 
