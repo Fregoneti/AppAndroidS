@@ -1,16 +1,52 @@
 <resources>
-    <string name="app_name">Foro de Preguntas</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="siguiente">Siguiente</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_splash">splash</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_formulario">FormularioActivity</string>
+    <string name="app_name" translatable="false">Foro de Preguntas</string>
+    <string name="splash">SplashScreen</string>
+    <string name="search">Search</string>
+    <string name="formu">Form</string>
+
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->desarrolla la pregunta
+
+    <string name="siguiente">Next</string>
+    <string name="previous">Previous</string>
+    <string name="ordenar">Order</string>
+    <string name="configuracion">Configuration</string>
+    <string name="ayuda">Help</string>
+    <string name="about">About AppCrud</string>
+
+    <string name="name">Name</string>
+    <string name="data">Data</string>
+    <string name="question">Question</string>
+    <string name="save">Save</string>
+    <string name="sure">Are you sure?</string>
+    <string name="develop">Develop the question</string>
+    <string name="date">Date</string>
+    <string name="datem">DD/MM/YYYY</string>
+    <string name="mail">Mail</string>
+    <string name="reset">Reset</string>
+    <string name="titleq">Question Title</string>
+    <string name="title">Title</string>
+    <string name="remove">Remove</string>
+    <string name="color">Colour</string>
+    <string name="clean">Clean Image</string>
+    <string name="image">Image</string>
+
+    <string name="username">User Name</string>
+    <string name="spinner" translatable="false">Spinner</string>
+    <string name="devel">Developer</string>
+
+    <string name="developer">Carlos Aguilar</string>
+    <string name="ccontacto">Mail</string>
+    <string name="devemail">carlosaguilaralfere@gmail.com</string>
+
+
+
+
+
+
+
+
+
     <string name="next">Next</string>
 </resources>

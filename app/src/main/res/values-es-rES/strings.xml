@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="splash" translatable="false">Pantalla Splash</string>
+    <string name="search" translatable="false">Buscar</string>
+    <string name="formu" translatable="false">Formulario</string>
+    <string name="action_settings" translatable="false">Opciones</string>
+    <string name="siguiente" translatable="false">Siguiente</string>
+    <string name="previous" translatable="false">Anterior</string>
+    <string name="ordenar" translatable="false">Ordenar</string>
+    <string name="configuracion" translatable="false">Configuración</string>
+    <string name="ayuda" translatable="false">Ayuda</string>
+    <string name="about" translatable="false">Sobre AppCrud</string>
+    <string name="next" translatable="false">Siguiente</string>
+    <string name="name">Nombre</string>
+    <string name="data">Datos</string>
+    <string name="question">Pregunta</string>
+    <string name="save">Guardar</string>
+    <string name="sure">¿Estás seguro?</string>
+    <string name="develop">Desarrolla la pregunta</string>
+    <string name="date">Fecha</string>
+    <string name="mail">Correo</string>
+    <string name="reset">Reiniciar</string>
+    <string name="titleq">Título de pregunta</string>
+    <string name="title">Títullo</string>
+    <string name="remove">Borrar</string>
+    <string name="color">Color</string>
+    <string name="clean">Limpiar Imagen</string>
+    <string name="image">Imagen</string>
+    <string name="username">Usuario</string>
+    <string name="datem" translatable="false">DD/MM/AAAA</string>
+</resources>

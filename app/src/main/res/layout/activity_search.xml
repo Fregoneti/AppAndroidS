@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="views.FormularioActivity">
+    tools:context="views.SearchActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -22,9 +22,9 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    c
 
-
-    <include layout="@layout/content_formulario" />
+    <include layout="@layout/content_search" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
