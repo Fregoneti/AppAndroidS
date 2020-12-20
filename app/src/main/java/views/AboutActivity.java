@@ -33,7 +33,7 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle("@string/about");
+            getSupportActionBar().setTitle(getResources().getString(R.string.about));
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

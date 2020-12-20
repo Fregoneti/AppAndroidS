@@ -18,13 +18,16 @@ public class Question {
     boolean valid;
     private String colour;
     private String question;
+    private String image;
 
-    public Question() {
+    public Question(
+    ) {
     }
 
     public String getName() {
         return name;
     }
+
 
     public String getTittle() {
         return tittle;
@@ -112,8 +115,16 @@ public class Question {
             return valid;
         }
 
+    public String getImage() {
+        return image;
+    }
 
-        public static boolean validateDate(String date){
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public static boolean validateDate(String date){
             try {
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
                 formatoFecha.setLenient(false);
@@ -130,9 +141,7 @@ public class Question {
              String s="";
             if (!(name.equals(s))) {
                 this.name = name;
-
                 valid = true;
-
             } else {
                 valid = false;
                 System.out.println("Error al introducir nombre");

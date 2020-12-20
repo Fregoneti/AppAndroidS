@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="splash" translatable="false">Pantalla Splash</string>
-    <string name="search" translatable="false">Buscar</string>
-    <string name="formu" translatable="false">Formulario</string>
-    <string name="action_settings" translatable="false">Opciones</string>
-    <string name="siguiente" translatable="false">Siguiente</string>
-    <string name="previous" translatable="false">Anterior</string>
-    <string name="ordenar" translatable="false">Ordenar</string>
-    <string name="configuracion" translatable="false">Configuración</string>
-    <string name="ayuda" translatable="false">Ayuda</string>
-    <string name="about" translatable="false">Sobre AppCrud</string>
-    <string name="next" translatable="false">Siguiente</string>
     <string name="name">Nombre</string>
     <string name="data">Datos</string>
     <string name="question">Pregunta</string>
@@ -27,16 +16,28 @@
     <string name="clean">Limpiar Imagen</string>
     <string name="image">Imagen</string>
     <string name="username">Usuario</string>
-    <string name="datem" translatable="false">DD/MM/AAAA</string>
-    <string name="question_error" translatable="false">Error en la Pregunta</string>
-    <string name="colour_error" translatable="false">Error en el color</string>
-    <string name="tittle_error" translatable="false">Error en el titulo</string>
-    <string name="mail_error" translatable="false">Error en el mail</string>
     <string name="name_error">Error en el nombre</string>
-    <string name="date_error" translatable="false">Error en la fecha</string>
-    <string name="devel" translatable="false">Desarrollador</string>
-    <string name="developer" translatable="false">Carlos Aguilar</string>
-    <string name="ccontacto" translatable="false">Correo</string>
     <string name="devemail">carlosaguilaralfere@gmail.com</string>
-    <string name="spinner" translatable="false">Spinner</string>
+    <string name="devel">Desarrollador</string>
+    <string name="question_error">Error de pregunta</string>
+    <string name="colour_error">Error de color</string>
+    <string name="tittle_error">Error de título</string>
+    <string name="date_error">Error de fecha</string>
+    <string name="next">Siguiente</string>
+    <string name="mail_error">Error mail</string>
+    <string name="ccontacto">Email</string>
+    <string name="datem">DD/MM/AAAA</string>
+    <string name="search">Buscar</string>
+    <string name="order">Ordenar</string>
+    <string name="help">Ayuda</string>
+    <string name="previous">Anterior</string>
+    <string name="action_settings">Opciones</string>
+    <string name="form">Formulario</string>
+    <string name="configuration">Configuracion</string>
+    <string name="addspinner">Añadir al Spinner</string>
+    <string name="error_files">Error al crear archivos</string>
+    <string name="choose_picture">Elige una imagen</string>
+    <string name="from_camera">Cargar imagen desde camara</string>
+    <string name="from_gallery">Cargar imagen desde galería</string>
+    <string name="denied">Acceso denegado</string>
 </resources>
