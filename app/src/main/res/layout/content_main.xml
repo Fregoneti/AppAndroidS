@@ -16,10 +16,11 @@ tools:showIn="@layout/activity_main">
         android:id="@+id/recycled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="51dp"
-        tools:listitem="@layout/user_row"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:listitem="@layout/user_row" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

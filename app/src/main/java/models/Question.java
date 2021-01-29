@@ -2,17 +2,24 @@ package models;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Question {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-    Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+public class Question extends RealmObject {
+    // Debe existir una clave primaria para poder actualizar objetos
+    @PrimaryKey
+    private String id;
+
+   // Pattern pattern = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
     private String name;
     private String mail;
-    private int day;
-    private int month;
-    private int year;
+    //private int day;
+    // int month;
+   // private int year;
     private String date;
     private String tittle;
     boolean valid;
@@ -22,6 +29,14 @@ public class Question {
 
     public Question(
     ) {
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -40,7 +55,7 @@ public class Question {
         return mail;
     }
 
-    public int getMontht() {
+    /*public int getMontht() {
         return month;
     }
 
@@ -55,20 +70,31 @@ public class Question {
         return date;
     }
 
-    public void setDate(int day, int month, int year){
+     */
 
-        date=day+"/"+month+"/"+year;
-        boolean res;
-     /*  res=validarFecha(date);
-        if(res==true){
-            System.out.println("La fecha es valida");
-            this.date=date;
-        }else
-            System.out.println("La fecha no es valida");
-
-
-      */
+    public boolean setDate(String value){
+        String format="dd/MM/yyyy";
+        boolean result = false;
+        Date date = null;
+        try {
+            //Parseo String-> SimpleDateFormat
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            date = sdf.parse(value);
+            if (value.equals(sdf.format(date))) {
+                result = true;
+                this.date = String.valueOf(date);
+            }
+        } catch (ParseException ex) {
+            ex.printStackTrace();
+            result = false;
+        }
+        return result;
     }
+
+
+
+
+
 
     public boolean setTittle(String tittle) {
          valid=false;
@@ -102,15 +128,17 @@ public class Question {
 
 
         public boolean setMail (String mail){
-            Matcher mather = pattern.matcher(mail);
+            //Matcher mather = pattern.matcher(mail);
             valid = false;
-            if (mather.find() == true) {
+            if (mail.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$") == true) {
                 System.out.println("El email ingresado es válido.");
                 valid = true;
                 this.mail = mail;
             } else {
                 System.out.println("El email ingresado es inválido.");
             }
+
+
 
             return valid;
         }
@@ -123,7 +151,7 @@ public class Question {
     public void setImage(String image) {
         this.image = image;
     }
-
+/*
     public static boolean validateDate(String date){
             try {
                 SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
@@ -135,6 +163,8 @@ public class Question {
             return true;
         }
 
+
+ */
 
         public boolean setName (String name){
              valid = false;
@@ -149,7 +179,7 @@ public class Question {
             return valid;
         }
 
-
+/*
     public boolean setDay(int day) {
         valid=false;
         if(day<31 && day>=1){
@@ -169,6 +199,7 @@ public class Question {
 
     }
 
+ */
     public boolean setQuestion(String question) {
         valid = false;
         if (question != "") {

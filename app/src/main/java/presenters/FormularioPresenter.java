@@ -1,16 +1,14 @@
 package presenters;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
-
 import androidx.core.content.ContextCompat;
-
 import com.example.demo.R;
-
 import interfaces.IFormulario;
+import models.Question;
+import models.QuestionModel;
 import views.App;
 
 public class FormularioPresenter implements IFormulario.Presenter {
@@ -18,6 +16,7 @@ public class FormularioPresenter implements IFormulario.Presenter {
 
     String TAG = "Foro/ListPresenter";
     private IFormulario.View view;
+    Question question;
 
     public FormularioPresenter (IFormulario.View view) {
         this.view = view;
@@ -97,9 +96,10 @@ public class FormularioPresenter implements IFormulario.Presenter {
         }
     }
 
-
-
-
+    @Override
+    public void onClickSave(Question question) {
+        QuestionModel.insertQuestion(question);
+    }
 
 
 }

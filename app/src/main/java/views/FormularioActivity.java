@@ -10,11 +10,14 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.example.demo.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -25,6 +28,7 @@ import androidx.core.app.ActivityCompat;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -35,6 +39,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -42,29 +48,34 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
+
 import interfaces.IFormulario;
+import io.realm.Realm;
 import models.Question;
 import presenters.FormularioPresenter;
 
 public class FormularioActivity extends AppCompatActivity implements IFormulario.View {
-    String TAG="Foro de Preguntas/FormularioActivity";
+
+    String TAG = "Foro de Preguntas/FormularioActivity";
     private IFormulario.Presenter presenter;
     private Context myContext;
     TextInputEditText nameP;
     TextInputEditText mailP;
-    TextInputEditText data;
+    TextInputEditText date;
     TextInputEditText titleP;
     TextInputEditText colorP;
     TextInputEditText questionP;
     Button add;
+    ImageView photo;
     Button remove;
     Calendar calendar;
     EditText editTextDate;
     DatePickerDialog datePickerDialog;
     ImageView buttonDate;
     int Year, Month, Day;
-    Question question=new Question(); //Creacion de una pregunta
-    private ArrayAdapter<String>adt;
+    Question question = new Question(); //Creacion de una pregunta
+    private ArrayAdapter<String> adt;
     private static final int REQUEST_CAPTURE_IMAGE = 200;
     private static final int REQUEST_SELECT_IMAGE = 201;
     final private int CODE_WRITE_EXTERNAL_STORAGE_PERMISSION = 123;
@@ -74,25 +85,27 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     ImageView Gallery;
     ImageView Camera;
     Button clear;
+    Button save;
+    TextInputEditText editTextName;
 
 
     @SuppressLint("WrongViewCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d(TAG,"Starting Create");
+        Log.d(TAG, "Starting Create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
-        presenter=new FormularioPresenter(this);
-        myContext=this;
+        presenter = new FormularioPresenter(this);
+        myContext = this;
 
         constraintLayoutFormActivity = findViewById(R.id.constraintl);
-
+        editTextName = findViewById(R.id.textInputEditText2);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         String[] letra = {"Público", "Privado"};
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, letra));
 
-        Button add =findViewById(R.id.addSpinner);
+        Button add = findViewById(R.id.addSpinner);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +114,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
-        Log.d(TAG,"Starting Toolbar");
+        Log.d(TAG, "Starting Toolbar");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
@@ -111,7 +124,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d(TAG,"Pressing back button");
+                    Log.d(TAG, "Pressing back button");
                     onBackPressed();
                 }
             });
@@ -122,10 +135,11 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
         nameP = findViewById(R.id.textInputEditText2);
         mailP = findViewById(R.id.textInputEditText3);
-        data = findViewById(R.id.textInputEditText4);
+        date = findViewById(R.id.textInputEditText4);
         titleP = findViewById(R.id.textInputEditText);
         colorP = findViewById(R.id.textInputEditText5);
         questionP = findViewById(R.id.editText);
+        photo=findViewById(R.id.imageView2);
 
         nameP.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -162,21 +176,22 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 //FECHA???
-        data.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus) {
-                    Log.d("FormActivity", "Exit EditText");
-                    if (question.setName(data.getText().toString()) == false) {
-                        data.setError(presenter.getError("Date"));
-                    } else {
-                        data.setError("");
-                    }
-                } else {
-                    Log.d("FormActivity", "Input EditText");
-                }
-            }
-        });
+        date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                                          @Override
+                                          public void onFocusChange(View view, boolean hasFocus) {
+                                              if (!hasFocus) {
+                                                  Log.d("FormActivity", "Exit EditText");
+                                                  if (question.setName(date.getText().toString()) == false) {
+                                                      date.setError(presenter.getError("Date"));
+                                                  } else {
+                                                      date.setError("");
+                                                  }
+                                              } else {
+                                                  Log.d("FormActivity", "Input EditText");
+                                              }
+                                          }
+                                      }
+        );
 
 
         titleP.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -230,7 +245,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
-        remove = (Button)findViewById(R.id.button3);
+        remove = (Button) findViewById(R.id.button3);
         remove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -243,7 +258,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"Yes button Clicked",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Yes button Clicked", Toast.LENGTH_LONG).show();
                         Log.i("Code2care ", "Yes button Clicked!");
 
                     }
@@ -253,8 +268,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"No button Clicked",Toast.LENGTH_LONG).show();
-                        Log.i("Code2care ","No button Clicked!");
+                        Toast.makeText(getApplicationContext(), "No button Clicked", Toast.LENGTH_LONG).show();
+                        Log.i("Code2care ", "No button Clicked!");
                         dialog.dismiss();
 
                     }
@@ -263,8 +278,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(),"Cancel button Clicked",Toast.LENGTH_LONG).show();
-                        Log.i("Code2care ","Cancel button Clicked!");
+                        Toast.makeText(getApplicationContext(), "Cancel button Clicked", Toast.LENGTH_LONG).show();
+                        Log.i("Code2care ", "Cancel button Clicked!");
                         dialog.dismiss();
                     }
                 });
@@ -293,7 +308,23 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         // Asignar la fecha a un campo de texto
                         //editTextDate.setText(String.valueOf(day) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
-                        editTextDate.setText((day) + "/" +(month+1) + "/" + (year));
+
+
+
+                        String day0 = "" + day;
+                        if (day < 10) {
+                            day0 = "0" + day;
+                        }
+                        String month0 = "" + (month + 1);
+                        if (month < 10) {
+                            month0 = "0" + month0;
+                        }
+                        editTextDate.setText(day0 + "/" + month0 + "/" + year);
+
+
+
+
+                       // editTextDate.setText((day) + "/" + (month + 1) + "/" + (year));
                     }
                 }, Year, Month, Day);
                 // Mostrar el calendario
@@ -303,30 +334,30 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
-         Gallery = (ImageView) findViewById(R.id.imageView13);
-         Gallery.setOnClickListener(new View.OnClickListener() {
+        Gallery = (ImageView) findViewById(R.id.imageView13);
+        Gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                boolean valid=false;
+                boolean valid = false;
                 presenter.onClickImage();
                 //presenter.selectPicture();
             }
         });
 
-         Camera = findViewById(R.id.imageView12);
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+        Camera = findViewById(R.id.imageView12);
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             Camera.setEnabled(false);
         } else {
             Camera.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+                    if (getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
                         presenter.takePicture();
                     }
                 }
             });
 
-            clear=findViewById(R.id.button4);
+            clear = findViewById(R.id.button4);
             clear.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -336,13 +367,13 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         }
 
 
-        clear =findViewById(R.id.button4);
+        clear = findViewById(R.id.button4);
         add.setOnClickListener(new View.OnClickListener() {
-                                   @Override
-                                   public void onClick(View v) {
-                                        presenter.cleanImage();
-                                   }
-                               });
+            @Override
+            public void onClick(View v) {
+                presenter.cleanImage();
+            }
+        });
 
 
 /*
@@ -376,6 +407,45 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
  */
 
+
+// Configuración del clic del botón guardar
+        save = findViewById(R.id.button2);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String result = null;
+                try {
+                    BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
+                    if (drawable == null) {
+                        result = "";
+                    } else {
+                        Bitmap bitmap = Bitmap.createBitmap(drawable.getBitmap());
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 90, bos);
+                        byte[] imageBytes = bos.toByteArray();
+                        result = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (result != null) {
+                    question.setImage(result);
+                }
+                question.setId(UUID.randomUUID().toString());
+                question.setName(nameP.getText().toString());
+                question.setDate(editTextDate.getText().toString());
+
+                question.setMail(mailP.getText().toString());
+                question.setTittle(titleP.getText().toString());
+                question.setColour(colorP.getText().toString());
+                question.setQuestion(questionP.getText().toString());
+
+
+
+                presenter.onClickSave(question);
+            }
+        });
     }
 
 
@@ -400,16 +470,14 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     }
 
 
-
-
-    private String getFileCode()
-    {
+    private String getFileCode() {
         // Se crea un código a partir de la fecha y hora
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyymmddhhmmss", java.util.Locale.getDefault());
         String date = dateFormat.format(new Date());
         // Se devuelve el código
         return "pic_" + date;
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -431,7 +499,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                     file.delete();
                 }
                 break;
-
 
 
             case (REQUEST_SELECT_IMAGE):
@@ -469,7 +536,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             dirFotos.mkdirs();
 
             // Se crea el archivo para almacenar la fotografía
-            File fileFoto = File.createTempFile(getFileCode(),".jpg", dirFotos);
+            File fileFoto = File.createTempFile(getFileCode(), ".jpg", dirFotos);
 
             // Se crea el objeto Uri a partir del archivo
             // A partir de la API 24 se debe utilizar FileProvider para proteger
@@ -511,8 +578,9 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             default:
         }
     }
+
     @Override
-    public void selectPicture(){
+    public void selectPicture() {
         // Se le pide al sistema una imagen del dispositivo
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -521,20 +589,15 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 Intent.createChooser(intent, getResources().getString(R.string.choose_picture)),
                 REQUEST_SELECT_IMAGE);
     }
-    @Override
-     public void resetPicture(){
 
-         ImageView imageView_Form = findViewById(R.id.imageView2);
-         imageView_Form.setImageBitmap(null);
-         imageView_Form.setBackgroundResource(R.drawable.splashscreen);
+    @Override
+    public void resetPicture() {
+
+        ImageView imageView_Form = findViewById(R.id.imageView2);
+        imageView_Form.setImageBitmap(null);
+        imageView_Form.setBackgroundResource(R.drawable.splashscreen);
 
     }
-
-
-
-
-
-
 
 
 }
