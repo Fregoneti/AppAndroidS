@@ -13,18 +13,15 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
 import com.example.demo.R;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
-
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -39,7 +36,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,6 +49,7 @@ import java.util.UUID;
 import interfaces.IFormulario;
 import io.realm.Realm;
 import models.Question;
+import models.QuestionModel;
 import presenters.FormularioPresenter;
 
 public class FormularioActivity extends AppCompatActivity implements IFormulario.View {
@@ -60,6 +57,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     String TAG = "Foro de Preguntas/FormularioActivity";
     private IFormulario.Presenter presenter;
     private Context myContext;
+    boolean exist;
+    String id;
     TextInputEditText nameP;
     TextInputEditText mailP;
     TextInputEditText date;
@@ -97,6 +96,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         setContentView(R.layout.activity_formulario);
         presenter = new FormularioPresenter(this);
         myContext = this;
+        id=null;
 
         constraintLayoutFormActivity = findViewById(R.id.constraintl);
         editTextName = findViewById(R.id.textInputEditText2);
@@ -106,6 +106,17 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, letra));
 
         Button add = findViewById(R.id.addSpinner);
+
+        nameP = findViewById(R.id.textInputEditText2);
+        mailP = findViewById(R.id.textInputEditText3);
+        date = findViewById(R.id.textInputEditText4);
+        titleP = findViewById(R.id.textInputEditText);
+        colorP = findViewById(R.id.textInputEditText5);
+        questionP = findViewById(R.id.editText);
+        photo=findViewById(R.id.imageView2);
+        remove = (Button) findViewById(R.id.button3);
+
+
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,13 +144,25 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         }
 
 
-        nameP = findViewById(R.id.textInputEditText2);
-        mailP = findViewById(R.id.textInputEditText3);
-        date = findViewById(R.id.textInputEditText4);
-        titleP = findViewById(R.id.textInputEditText);
-        colorP = findViewById(R.id.textInputEditText5);
-        questionP = findViewById(R.id.editText);
-        photo=findViewById(R.id.imageView2);
+        id = getIntent().getStringExtra("id");
+
+
+        //Si  encuentra una pregunta con ID->El boton de borrar se activa, si no encuentra, se desactiva
+        if(id!=null){
+            exist=true;
+            presenter.onAddParameters(id);
+            remove.setEnabled(true);
+
+        }else{
+            exist=false;
+            remove.setEnabled(false);
+        }
+
+
+
+
+
+
 
         nameP.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -245,48 +268,48 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
-        remove = (Button) findViewById(R.id.button3);
-        remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(FormularioActivity.this);
-                builder.setTitle("Guardando Pregunta");
-                builder.setMessage("¿Estás seguro de querer borrar esta pregunta?");
+
+        if(exist==true){
 
 
-                //Yes Button
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Yes button Clicked", Toast.LENGTH_LONG).show();
-                        Log.i("Code2care ", "Yes button Clicked!");
+            remove.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(FormularioActivity.this);
+                    builder.setTitle("Borrando Pregunta");
+                    builder.setMessage("¿Estás seguro de querer borrar esta pregunta?");
 
-                    }
-                });
 
-                //No Button
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "No button Clicked", Toast.LENGTH_LONG).show();
-                        Log.i("Code2care ", "No button Clicked!");
-                        dialog.dismiss();
+                    //Yes Button
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(), "Pregunta borrada con éxito", Toast.LENGTH_LONG).show();
+                            Log.i("Code2care ", "Yes button Clicked!");
+                            QuestionModel.removeQuestion(QuestionModel.searchQuestionById(id).getId());
+                            presenter.onStartMainActivity();
+                        }
+                    });
 
-                    }
-                });
-                //Cancel Button
-                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Cancel button Clicked", Toast.LENGTH_LONG).show();
-                        Log.i("Code2care ", "Cancel button Clicked!");
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
-        });
+
+                    //Cancel Button
+                    builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(), "¡No se ha borrado la pregunta!", Toast.LENGTH_LONG).show();
+                            Log.i("Code2care ", "Cancel button Clicked!");
+                            dialog.dismiss();
+                        }
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                }
+            });
+
+        }else{
+          //  remove.setEnabled(false);
+        }
+
 
         // Obtener la fecha actual
         calendar = Calendar.getInstance();
@@ -309,8 +332,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         // Asignar la fecha a un campo de texto
                         //editTextDate.setText(String.valueOf(day) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
 
-
-
                         String day0 = "" + day;
                         if (day < 10) {
                             day0 = "0" + day;
@@ -319,12 +340,10 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         if (month < 10) {
                             month0 = "0" + month0;
                         }
+
                         editTextDate.setText(day0 + "/" + month0 + "/" + year);
+                        String s=day0 + "/" + month0 + "/" + year;
 
-
-
-
-                       // editTextDate.setText((day) + "/" + (month + 1) + "/" + (year));
                     }
                 }, Year, Month, Day);
                 // Mostrar el calendario
@@ -432,18 +451,48 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 if (result != null) {
                     question.setImage(result);
                 }
+
                 question.setId(UUID.randomUUID().toString());
-                question.setName(nameP.getText().toString());
-                question.setDate(editTextDate.getText().toString());
 
-                question.setMail(mailP.getText().toString());
-                question.setTittle(titleP.getText().toString());
-                question.setColour(colorP.getText().toString());
-                question.setQuestion(questionP.getText().toString());
+                if(nameP.getText().toString().equals("")){
+                    presenter.onshowFormuAlert(1);
+                }else{
+                    question.setName(nameP.getText().toString());
+                }
 
 
+                if(editTextDate.getText().toString().equals("")){
+                    presenter.onshowFormuAlert(2);
+                }else{
+                    question.setDate(editTextDate.getText().toString());
+                }
+
+                if(mailP.getText().toString().equals("")){
+                    presenter.onshowFormuAlert(3);
+                }else{
+                    question.setMail(mailP.getText().toString());
+                }
+
+                if(titleP.getText().toString().equals("")){
+                    presenter.onshowFormuAlert(4);
+                }else{
+                    question.setTittle(titleP.getText().toString());
+                }
+
+                if(colorP.getText().toString().equals("")){
+                    presenter.onshowFormuAlert(5);
+                }else{
+                    question.setColour(colorP.getText().toString());
+                }
+
+                if(questionP.getText().toString().equals("")){
+                    presenter.onshowFormuAlert(5);
+                }else{
+                    question.setQuestion(questionP.getText().toString());
+                }
 
                 presenter.onClickSave(question);
+                presenter.onStartMainActivity();
             }
         });
     }
@@ -580,6 +629,34 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     }
 
     @Override
+    public void showFormuAlert(int n) {
+        switch (n){
+
+            case 1: Toast.makeText(myContext, "Error al introducir nombre", Toast.LENGTH_SHORT).show();
+            case 2:Toast.makeText(myContext, "Error al introducir fecha", Toast.LENGTH_SHORT).show();
+            case 3:Toast.makeText(myContext, "Error al introducir correo", Toast.LENGTH_SHORT).show();
+            case 4:Toast.makeText(myContext, "Error al introducir título", Toast.LENGTH_SHORT).show();
+            case 5:Toast.makeText(myContext, "Error al introducir color", Toast.LENGTH_SHORT).show();
+
+
+
+
+        }
+    }
+
+    @Override
+    public void refillParameters(Question q) {
+
+        nameP.setText(q.getName());
+        date.setText(q.getDate());
+        mailP.setText(q.getMail());
+        titleP.setText(q.getTittle());
+        colorP.setText(q.getColour());
+        questionP.setText(q.getQuestion());
+    }
+
+
+    @Override
     public void selectPicture() {
         // Se le pide al sistema una imagen del dispositivo
         Intent intent = new Intent();
@@ -597,6 +674,11 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         imageView_Form.setImageBitmap(null);
         imageView_Form.setBackgroundResource(R.drawable.splashscreen);
 
+    }
+    @Override
+    public void startMainActivity() {
+        Intent intent = new Intent(FormularioActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 
 

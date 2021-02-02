@@ -101,5 +101,27 @@ public class FormularioPresenter implements IFormulario.Presenter {
         QuestionModel.insertQuestion(question);
     }
 
+    @Override
+    public void onshowFormuAlert(int n) {
+        view.showFormuAlert(n);
+    }
+
+    @Override
+    public void onAddParameters(String id) {
+
+
+            view.refillParameters(QuestionModel.searchQuestionById(id));
+
+
+
+
+
+    }
+
+    @Override
+    public void onStartMainActivity() {
+        view.startMainActivity();
+    }
+
 
 }

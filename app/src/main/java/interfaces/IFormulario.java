@@ -19,9 +19,18 @@ public interface IFormulario {
         void selectPicture();
 
         void showPermission(int n);
+
+        void showFormuAlert(int n);
+
+        //void AddParameters(String id);
+
+        void refillParameters(Question q);
+
+        void startMainActivity();
     }
 
     public interface Presenter {
+
 
         void goBack();
 
@@ -38,5 +47,12 @@ public interface IFormulario {
         void onClickImage();
 
         void onClickSave(Question question);
+        void onshowFormuAlert(int n);
+
+        void onAddParameters(String id);
+
+        void onStartMainActivity();
+
+
     }
 }

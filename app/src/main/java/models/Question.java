@@ -179,27 +179,31 @@ public class Question extends RealmObject {
             return valid;
         }
 
-/*
-    public boolean setDay(int day) {
-        valid=false;
-        if(day<31 && day>=1){
-            this.day = day;
-            valid=true;
-        }
-        return  valid;
-
-    }
-    public boolean setMonth(int month) {
-        valid=false;
-        if(month<=12 && month>=1){
-            this.month = month;
-            valid=true;
-        }
-        return  valid;
-
+    public String getQuestion() {
+        return question;
     }
 
- */
+    /*
+        public boolean setDay(int day) {
+            valid=false;
+            if(day<31 && day>=1){
+                this.day = day;
+                valid=true;
+            }
+            return  valid;
+
+        }
+        public boolean setMonth(int month) {
+            valid=false;
+            if(month<=12 && month>=1){
+                this.month = month;
+                valid=true;
+            }
+            return  valid;
+
+        }
+
+     */
     public boolean setQuestion(String question) {
         valid = false;
         if (question != "") {
@@ -214,4 +218,7 @@ public class Question extends RealmObject {
         return valid;
     }
 
+    public String getDate() {
+        return date;
+    }
 }
