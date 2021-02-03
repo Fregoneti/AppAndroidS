@@ -98,16 +98,25 @@ public class FormularioPresenter implements IFormulario.Presenter {
 
     @Override
     public void onClickSave(Question question) {
-        QuestionModel.insertQuestion(question);
+
+        Log.d(TAG, "Save Button Clicked");
+        if(QuestionModel.isQuestion(question.getId())==false){
+            QuestionModel.updateUser(question);
+        }else{
+            QuestionModel.insertQuestion(question);
+        }
+
     }
 
     @Override
     public void onshowFormuAlert(int n) {
+        Log.d(TAG, "Show alert form");
         view.showFormuAlert(n);
     }
 
     @Override
     public void onAddParameters(String id) {
+        Log.d(TAG, "Refilling parameters");
 
 
             view.refillParameters(QuestionModel.searchQuestionById(id));

@@ -51,4 +51,5 @@
     <string name="from_camera">From camera</string>
     <string name="from_gallery">From gallery</string>
     <string name="denied">Denied access</string>
+    <string name="thereareq">There are x Questions</string>
 </resources>

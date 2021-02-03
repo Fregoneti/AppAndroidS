@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     String TAG = "Foro de Preguntas /MainActivity";
     private ArrayList<Question> items;
     QuestionAdapter adapter;
+    TextView number_question;
     Button btn;
     Question a, i, e, o, u, b, c, d, f, g;
 
@@ -102,6 +104,14 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             }
         });
         helper.attachToRecyclerView(recyclerView);
+
+
+        //Creamos el textview de las preguntas
+        number_question = (TextView) findViewById(R.id.numberQ);
+        String message=number_question.getText().toString();
+        //int first_size=items.size();
+        String X=message.replace("x"+"",""+items.size());
+        number_question.setText(X);
     }
 
 
@@ -164,7 +174,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     protected void onResume() {
         Log.d(TAG, "Starting onResume");
         super.onResume();
-
+        int numberofquestions = items.size();
         //items.removeAll(presenter.getAllUsers());
         items.clear();
         items.addAll(presenter.getAllQuestions());
@@ -183,15 +193,13 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             }
         });
         recyclerView.setAdapter(adapter);
-        /*
-        //Actualizamos el textview de los elementos
-        nUsers = (TextView) findViewById(R.id.textView_User_List);
-        String text=nUsers.getText().toString();
-        int first_size=items.size();
-        String text1=text.replace(""+first_size,""+items.size());
-        nUsers.setText(text1);
 
-         */
+        //Actualizamos el textview de los elementos
+        String message = number_question.getText().toString();
+        String text1=message.replace("" + numberofquestions, "" + items.size());
+        number_question.setText(text1);
+
+
     }
 }
 

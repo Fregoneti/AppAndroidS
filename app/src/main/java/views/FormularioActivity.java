@@ -427,13 +427,14 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
  */
 
 
-// Configuración del clic del botón guardar
+        // Configuración del clic del botón guardar
         save = findViewById(R.id.button2);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 String result = null;
+                boolean valid=true;
                 try {
                     BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
                     if (drawable == null) {
@@ -452,10 +453,12 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                     question.setImage(result);
                 }
 
-                question.setId(UUID.randomUUID().toString());
-
+                if(exist==false) {
+                    question.setId(UUID.randomUUID().toString());
+                }
                 if(nameP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(1);
+                    valid=false;
                 }else{
                     question.setName(nameP.getText().toString());
                 }
@@ -463,36 +466,47 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
                 if(editTextDate.getText().toString().equals("")){
                     presenter.onshowFormuAlert(2);
+                    valid=false;
                 }else{
                     question.setDate(editTextDate.getText().toString());
                 }
 
                 if(mailP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(3);
+                    valid=false;
                 }else{
                     question.setMail(mailP.getText().toString());
                 }
 
                 if(titleP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(4);
+                    valid=false;
                 }else{
                     question.setTittle(titleP.getText().toString());
                 }
 
                 if(colorP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(5);
+                    valid=false;
                 }else{
                     question.setColour(colorP.getText().toString());
                 }
 
                 if(questionP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(5);
+                    valid=false;
                 }else{
                     question.setQuestion(questionP.getText().toString());
                 }
 
-                presenter.onClickSave(question);
-                presenter.onStartMainActivity();
+                if(valid==true){
+                    presenter.onClickSave(question);
+                    presenter.onStartMainActivity();
+                }else{
+                    presenter.onshowFormuAlert(8);
+                }
+
+
             }
         });
     }
@@ -628,6 +642,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         }
     }
 
+    //Toast para saltar errores en el formulario
     @Override
     public void showFormuAlert(int n) {
         switch (n){
@@ -637,6 +652,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             case 3:Toast.makeText(myContext, "Error al introducir correo", Toast.LENGTH_SHORT).show();
             case 4:Toast.makeText(myContext, "Error al introducir título", Toast.LENGTH_SHORT).show();
             case 5:Toast.makeText(myContext, "Error al introducir color", Toast.LENGTH_SHORT).show();
+            case 8:Toast.makeText(myContext, "Error al guardar", Toast.LENGTH_SHORT).show();
 
 
 
@@ -644,6 +660,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         }
     }
 
+    //Rellena si encuentra la pregunta -> Para hacer update
     @Override
     public void refillParameters(Question q) {
 
@@ -656,6 +673,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     }
 
 
+    //Selecciona foto de la galeria
     @Override
     public void selectPicture() {
         // Se le pide al sistema una imagen del dispositivo
@@ -667,6 +685,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 REQUEST_SELECT_IMAGE);
     }
 
+    //Hace un reseteo a la foto por deafult
     @Override
     public void resetPicture() {
 
@@ -674,7 +693,9 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         imageView_Form.setImageBitmap(null);
         imageView_Form.setBackgroundResource(R.drawable.splashscreen);
 
+
     }
+    //Comienza actividad main
     @Override
     public void startMainActivity() {
         Intent intent = new Intent(FormularioActivity.this, MainActivity.class);

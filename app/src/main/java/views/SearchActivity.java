@@ -16,8 +16,14 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
+
 import interfaces.ISearch;
+import models.Question;
+import models.QuestionModel;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
 
@@ -38,9 +44,16 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         setContentView(R.layout.activity_search);
         myContext = this;
 
+
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         String[] letra = {"1 Option"};
+
+
+
+
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, letra));
+
+
 
 
 

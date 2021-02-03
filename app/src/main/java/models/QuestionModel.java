@@ -26,6 +26,8 @@ public class QuestionModel {
         realm.close();
     }
 
+
+
     public static boolean removeQuestion(String id) {
         boolean valid = false;
         Realm realm = Realm.getDefaultInstance();
@@ -59,6 +61,42 @@ public class QuestionModel {
             realm.close();
         }
         return question;
+    }
+
+    public static boolean isQuestion(String id) {
+        boolean valid = false;
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.beginTransaction();
+            if (realm.where(Question.class).equalTo("id", id).findAll().size() == 0) {
+                valid = false;
+            } else {
+                valid = true;
+            }
+            realm.commitTransaction();
+            realm.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            realm.close();
+        }
+        return valid;
+    }
+
+    public static boolean updateUser(Question question) {
+        boolean valid = false;
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.beginTransaction();
+            realm.insertOrUpdate(question);
+            realm.commitTransaction();
+            realm.close();
+            valid = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            realm.close();
+            valid = false;
+        }
+        return valid;
     }
 
 
