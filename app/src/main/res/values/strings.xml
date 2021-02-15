@@ -52,4 +52,7 @@
     <string name="from_gallery">From gallery</string>
     <string name="denied">Denied access</string>
     <string name="thereareq">There are x Questions</string>
+    <string name="cancel">cancel</string>
+    <string name="addd">Add</string>
+    <string name="mode_spinnerr">Select mode</string>
 </resources>

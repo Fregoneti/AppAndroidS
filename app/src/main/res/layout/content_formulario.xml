@@ -370,6 +370,35 @@
                 app:layout_constraintEnd_toStartOf="@+id/button4"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_galeria" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="46dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginEnd="17dp"
+                android:layout_marginBottom="8dp"
+                android:text="Identificador:"
+                app:layout_constraintBottom_toTopOf="@+id/textInputEditText2"
+                app:layout_constraintEnd_toStartOf="@+id/textView15"
+                app:layout_constraintStart_toEndOf="@+id/textView"
+                app:layout_constraintTop_toBottomOf="@+id/button4" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="96dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="27dp"
+                android:layout_marginEnd="137dp"
+                android:layout_marginBottom="8dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toTopOf="@+id/textInputEditText2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView14"
+                app:layout_constraintTop_toBottomOf="@+id/button4"
+                app:layout_constraintVertical_bias="0.0" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

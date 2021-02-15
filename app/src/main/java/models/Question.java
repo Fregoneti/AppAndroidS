@@ -26,9 +26,18 @@ public class Question extends RealmObject {
     private String colour;
     private String question;
     private String image;
+    private String mode;
 
     public Question(
     ) {
+    }
+
+    public void setMode (String mode) {
+        this.mode = mode;
+    }
+
+    public String getMode() {
+        return mode;
     }
 
     public String getId() {
@@ -55,22 +64,7 @@ public class Question extends RealmObject {
         return mail;
     }
 
-    /*public int getMontht() {
-        return month;
-    }
 
-    public int getDay() {
-        return day;
-    }
-    public int getYear() {
-        return year;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-     */
 
     public boolean setDate(String value){
         String format="dd/MM/yyyy";
@@ -82,7 +76,7 @@ public class Question extends RealmObject {
             date = sdf.parse(value);
             if (value.equals(sdf.format(date))) {
                 result = true;
-                this.date = String.valueOf(date);
+                this.date = value;
             }
         } catch (ParseException ex) {
             ex.printStackTrace();
@@ -90,10 +84,6 @@ public class Question extends RealmObject {
         }
         return result;
     }
-
-
-
-
 
 
     public boolean setTittle(String tittle) {
@@ -219,6 +209,7 @@ public class Question extends RealmObject {
     }
 
     public String getDate() {
+
         return date;
     }
 }

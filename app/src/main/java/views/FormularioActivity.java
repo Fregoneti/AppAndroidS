@@ -27,6 +27,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -35,6 +36,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -42,6 +44,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
@@ -54,26 +57,27 @@ import presenters.FormularioPresenter;
 
 public class FormularioActivity extends AppCompatActivity implements IFormulario.View {
 
-    String TAG = "Foro de Preguntas/FormularioActivity";
+    public String TAG = "Foro de Preguntas/FormularioActivity";
     private IFormulario.Presenter presenter;
     private Context myContext;
     boolean exist;
-    String id;
-    TextInputEditText nameP;
-    TextInputEditText mailP;
-    TextInputEditText date;
-    TextInputEditText titleP;
-    TextInputEditText colorP;
-    TextInputEditText questionP;
-    Button add;
-    ImageView photo;
-    Button remove;
-    Calendar calendar;
-    EditText editTextDate;
-    DatePickerDialog datePickerDialog;
-    ImageView buttonDate;
+    public String id;
+    public TextView idP;
+    public TextInputEditText nameP;
+    public TextInputEditText mailP;
+    public TextInputEditText date;
+    public TextInputEditText titleP;
+    public TextInputEditText colorP;
+    public TextInputEditText questionP;
+    public Button add;
+    public ImageView photo;
+    public Button remove;
+    public Calendar calendar;
+    public EditText editTextDate;
+    public DatePickerDialog datePickerDialog;
+    public ImageView buttonDate;
     int Year, Month, Day;
-    Question question = new Question(); //Creacion de una pregunta
+    public Question question = new Question(); //Creacion de una pregunta
     private ArrayAdapter<String> adt;
     private static final int REQUEST_CAPTURE_IMAGE = 200;
     private static final int REQUEST_SELECT_IMAGE = 201;
@@ -81,11 +85,13 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     private ConstraintLayout constraintLayoutFormActivity;
     final String pathFotos = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/demoAndroidImages/";
     private Uri uri;
-    ImageView Gallery;
-    ImageView Camera;
-    Button clear;
-    Button save;
-    TextInputEditText editTextName;
+    public ImageView Gallery;
+    public ImageView Camera;
+    public Button clear;
+    public Button save;
+    public TextInputEditText editTextName;
+    public  ArrayList listMode=null;
+    private Spinner mode = null;
 
 
     @SuppressLint("WrongViewCast")
@@ -100,13 +106,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
         constraintLayoutFormActivity = findViewById(R.id.constraintl);
         editTextName = findViewById(R.id.textInputEditText2);
-
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        String[] letra = {"Público", "Privado"};
-        spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, letra));
-
-        Button add = findViewById(R.id.addSpinner);
-
+        add = findViewById(R.id.addSpinner);
+        idP= findViewById(R.id.textView15);
         nameP = findViewById(R.id.textInputEditText2);
         mailP = findViewById(R.id.textInputEditText3);
         date = findViewById(R.id.textInputEditText4);
@@ -118,12 +119,15 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
 
         add.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "add spinner ");
-                presenter.onClickAddSpinnerOption();
+                presenter.onAddSpinner();
             }
         });
+
+
 
         Log.d(TAG, "Starting Toolbar");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -142,6 +146,42 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         } else {
             Log.d(TAG, "Error loading toolbar");
         }
+
+
+        //Declaramos el arrayList del Spinner
+        listMode = new ArrayList<String>();
+        //listMode={"oas"};
+        listMode.addAll(presenter.getSpinner());
+        listMode.remove("");
+        listMode.add(getResources().getString(R.string.mode_spinnerr));
+
+        //Creamos el adaptador
+        adt = new ArrayAdapter<String>(this, R.layout.support_simple_spinner_dropdown_item, listMode);
+        adt.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+
+        //Creamos el spinner y le inyectamos los valores del adaptador
+        mode = findViewById(R.id.spinner);
+        mode.setAdapter(adt);
+        int indexOfDW = listMode.indexOf(getResources().getString(R.string.mode_spinnerr));
+        //Valor por defecto del Spinner
+        mode.setSelection(indexOfDW);
+
+/*
+        //Boton añadir del spinner
+        AddSpinner();
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Pressing ADD spinner button");
+                presenter.onAddSpinner();
+
+            }
+        });
+
+
+ */
+
+
 
 
         id = getIntent().getStringExtra("id");
@@ -198,13 +238,13 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
             }
         });
-//FECHA???
+
         date.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                                           @Override
                                           public void onFocusChange(View view, boolean hasFocus) {
                                               if (!hasFocus) {
                                                   Log.d("FormActivity", "Exit EditText");
-                                                  if (question.setName(date.getText().toString()) == false) {
+                                                  if (question.setDate(date.getText().toString()) == false) {
                                                       date.setError(presenter.getError("Date"));
                                                   } else {
                                                       date.setError("");
@@ -286,8 +326,10 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         public void onClick(DialogInterface dialog, int which) {
                             Toast.makeText(getApplicationContext(), "Pregunta borrada con éxito", Toast.LENGTH_LONG).show();
                             Log.i("Code2care ", "Yes button Clicked!");
-                            QuestionModel.removeQuestion(QuestionModel.searchQuestionById(id).getId());
+
+                            presenter.onDeleteQuestion(presenter.onSearchQuestionById(id).getId());
                             presenter.onStartMainActivity();
+
                         }
                     });
 
@@ -316,6 +358,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
 
         editTextDate = (EditText) findViewById(R.id.textInputEditText4);
 
@@ -394,37 +438,25 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
-
-/*
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(myContext);
-        builder.setTitle(getResources().getString(R.string.addspinner));
-        // I'm using fragment here so I'm using getView() to provide ViewGroup
-        // but you can provide here any other instance of ViewGroup from your Fragment / Activity
-        View viewInflated = LayoutInflater.from(myContext()).inflate(R.layout.add_spinner, (ViewGroup) getView(), false);
-        // Set up the input
-        final EditText input = (EditText) viewInflated.findViewById(R.id.input);
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        builder.setView(viewInflated);
-
-        // Set up the buttons
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        Button reset = findViewById(R.id.button);
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                m_Text = input.getText().toString();
-            }
-        });
-        builder.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                presenter.onResetElements();
             }
         });
 
-        builder.show();
 
- */
+
+        //Boton añadir del spinner
+        add = findViewById(R.id.addSpinner);
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Pressing ADD spinner button");
+                presenter.onAddSpinner();
+            }
+        });
 
 
         // Configuración del clic del botón guardar
@@ -455,7 +487,17 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
                 if(exist==false) {
                     question.setId(UUID.randomUUID().toString());
+                }else{
+                    question.setId(idP.getText().toString());
                 }
+
+                if (!(mode.getSelectedItem().equals(App.getContext().getString(R.string.spinner)))) {
+                    question.setMode(mode.getSelectedItem().toString());
+                } else {
+                    question.setMode("");
+                }
+
+
                 if(nameP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(1);
                     valid=false;
@@ -492,6 +534,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                     question.setColour(colorP.getText().toString());
                 }
 
+
+
                 if(questionP.getText().toString().equals("")){
                     presenter.onshowFormuAlert(5);
                     valid=false;
@@ -507,6 +551,11 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 }
 
 
+                //NOSE
+                int temp2 = listMode.indexOf(question.getMode());
+                mode.setSelection(temp2);
+
+
             }
         });
     }
@@ -517,10 +566,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         finish();
     }
 
-    @Override
-    public void addSpinnerOption() {
-
-    }
 
 
     @Override
@@ -663,13 +708,16 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     //Rellena si encuentra la pregunta -> Para hacer update
     @Override
     public void refillParameters(Question q) {
-
+        idP.setText(q.getId());
         nameP.setText(q.getName());
         date.setText(q.getDate());
+        //editTextDate.setText(q.getDate());
         mailP.setText(q.getMail());
         titleP.setText(q.getTittle());
         colorP.setText(q.getColour());
         questionP.setText(q.getQuestion());
+
+
     }
 
 
@@ -700,6 +748,64 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     public void startMainActivity() {
         Intent intent = new Intent(FormularioActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void resetElements() {
+
+        idP.setText("");
+        nameP.setText("");
+        date.setText("");
+        //editTextDate.setText(q.getDate());
+        mailP.setText("");
+        titleP.setText("");
+        colorP.setText("");
+        questionP.setText("");
+
+    }
+
+    @Override
+    public void AddSpinner() {
+
+        String p = "";
+        Log.d(TAG, "Adding mode to spinner");
+        LayoutInflater layoutActivity = LayoutInflater.from(myContext);
+        View viewAlertDialog = layoutActivity.inflate(R.layout.alert, null);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(myContext);
+        alertDialog.setView(viewAlertDialog);
+        final EditText dialogInput = viewAlertDialog.findViewById(R.id.dialogInput);
+        alertDialog.setCancelable(false)
+                // Botón Añadir
+                .setPositiveButton(getResources().getString(R.string.addd),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                if ((dialogInput.getText().toString().equals(p))) {
+                                    dialogBox.cancel();
+                                } else {
+                                    adt.add(dialogInput.getText().toString());
+                                    mode.setSelection(adt.getPosition(dialogInput.getText().toString()));
+                                }
+                            }
+                        })
+                // Botón Cancelar
+                .setNegativeButton(getResources().getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogBox, int id) {
+                                dialogBox.cancel();
+                            }
+                        })
+                .create()
+                .show();
+    }
+
+    @Override
+    public void deleteQuestion(String id) {
+        QuestionModel.removeQuestion(id);
+    }
+
+    @Override
+    public Question searchQuestionById(String id) {
+       return QuestionModel.searchQuestionById(id);
     }
 
 

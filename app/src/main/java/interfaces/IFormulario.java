@@ -2,6 +2,8 @@ package interfaces;
 
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import models.Question;
 
 public interface IFormulario {
@@ -11,8 +13,6 @@ public interface IFormulario {
         void onGoBack();
 
         void resetPicture();
-
-        void addSpinnerOption();
 
         void takePicture();
 
@@ -27,10 +27,23 @@ public interface IFormulario {
         void refillParameters(Question q);
 
         void startMainActivity();
+
+
+        void resetElements();
+
+        void AddSpinner();
+
+        void deleteQuestion(String id);
+
+        Question searchQuestionById(String id);
     }
 
     public interface Presenter {
 
+
+       ArrayList getSpinner();
+
+       void onDeleteQuestion(String id);
 
         void goBack();
 
@@ -42,7 +55,7 @@ public interface IFormulario {
 
         void selectPicture();
 
-        void onClickAddSpinnerOption();
+        void onResetElements();
 
         void onClickImage();
 
@@ -52,6 +65,10 @@ public interface IFormulario {
         void onAddParameters(String id);
 
         void onStartMainActivity();
+
+        void onAddSpinner();
+
+        Question onSearchQuestionById(String id);
 
 
     }

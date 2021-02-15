@@ -41,4 +41,7 @@
     <string name="from_gallery">Cargar imagen desde galería</string>
     <string name="denied">Acceso denegado</string>
     <string name="thereareq">Hay x preguntas</string>
+    <string name="cancel">cancelar</string>
+    <string name="addd">Añadir</string>
+    <string name="mode_spinnerr">Elige el modo</string>
 </resources>

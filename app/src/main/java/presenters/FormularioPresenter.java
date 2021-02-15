@@ -4,8 +4,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.util.Log;
+
 import androidx.core.content.ContextCompat;
+
 import com.example.demo.R;
+
+import java.util.ArrayList;
+
 import interfaces.IFormulario;
 import models.Question;
 import models.QuestionModel;
@@ -18,14 +23,22 @@ public class FormularioPresenter implements IFormulario.Presenter {
     private IFormulario.View view;
     Question question;
 
-    public FormularioPresenter (IFormulario.View view) {
+    public FormularioPresenter(IFormulario.View view) {
         this.view = view;
     }
 
 
+    @Override
+    public ArrayList getSpinner() {
+        return QuestionModel.getSpinner();
+    }
 
+    @Override
+    public void onDeleteQuestion(String id) {
+        view.deleteQuestion(id);
+    }
 
-    public void goBack(){
+    public void goBack() {
         view.onGoBack();
     }
 
@@ -51,7 +64,8 @@ public class FormularioPresenter implements IFormulario.Presenter {
             case "Question":
                 error_msg = App.getContext().getResources().getString(R.string.question_error);
                 break;
-            default:error_msg="";
+            default:
+                error_msg = "";
 
         }
         return error_msg;
@@ -62,18 +76,23 @@ public class FormularioPresenter implements IFormulario.Presenter {
         view.takePicture();
     }
 
-    @Override
-    public void onClickAddSpinnerOption() {
-        view.addSpinnerOption();
-    }
+
 
     @Override
-    public void selectPicture(){
+    public void selectPicture() {
         view.selectPicture();
     }
 
     @Override
-    public void cleanImage(){view.resetPicture();};
+    public void onResetElements() {
+        Log.d(TAG, "Resetting elements: ");
+        view.resetElements();
+    }
+
+    @Override
+    public void cleanImage() {
+        view.resetPicture();
+    }
 
     @Override
     public void onClickImage() {
@@ -100,9 +119,12 @@ public class FormularioPresenter implements IFormulario.Presenter {
     public void onClickSave(Question question) {
 
         Log.d(TAG, "Save Button Clicked");
-        if(QuestionModel.isQuestion(question.getId())==false){
+        // System.out.println(QuestionModel.isQuestion(question.getId()));
+
+        if (QuestionModel.isQuestion(question.getId()) == true) {
+            System.out.println(question.getId());
             QuestionModel.updateUser(question);
-        }else{
+        } else {
             QuestionModel.insertQuestion(question);
         }
 
@@ -119,10 +141,7 @@ public class FormularioPresenter implements IFormulario.Presenter {
         Log.d(TAG, "Refilling parameters");
 
 
-            view.refillParameters(QuestionModel.searchQuestionById(id));
-
-
-
+        view.refillParameters(QuestionModel.searchQuestionById(id));
 
 
     }
@@ -130,6 +149,17 @@ public class FormularioPresenter implements IFormulario.Presenter {
     @Override
     public void onStartMainActivity() {
         view.startMainActivity();
+    }
+
+    @Override
+    public void onAddSpinner() {
+        view.AddSpinner();
+    }
+
+    @Override
+    public Question onSearchQuestionById(String id) {
+        return QuestionModel.searchQuestionById(id);
+
     }
 
 
