@@ -17,54 +17,54 @@
 
     <TextView
         android:id="@+id/tittle"
+        style="@style/rview1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="112dp"
-        android:layout_marginRight="112dp"
+        android:layout_marginStart="94dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="76dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView12"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="@tools:sample/last_names" />
 
     <TextView
         android:id="@+id/color"
+        style="@style/rview1"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="112dp"
-        android:layout_marginRight="112dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="88dp"
+
         android:text="@string/color"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
         app:layout_constraintTop_toBottomOf="@+id/tittle" />
 
     <TextView
         android:id="@+id/textView12"
+        style="@style/CustomText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginLeft="23dp"
+        android:layout_marginStart="7dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginRight="40dp"
         android:text="@string/title"
         android:textStyle="bold|italic"
-        app:layout_constraintEnd_toStartOf="@+id/tittle"
         app:layout_constraintStart_toEndOf="@+id/photo"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView13"
+        style="@style/CustomText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="26dp"
-        android:layout_marginRight="26dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginTop="29dp"
         android:text="@string/color"
         android:textStyle="bold|italic"
-        app:layout_constraintEnd_toStartOf="@+id/color"
-        app:layout_constraintHorizontal_bias="0.557"
         app:layout_constraintStart_toEndOf="@+id/photo"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 

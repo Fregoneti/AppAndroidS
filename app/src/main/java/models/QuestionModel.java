@@ -3,8 +3,10 @@ package models;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
@@ -99,7 +101,7 @@ public class QuestionModel {
         return valid;
     }
 
-    public static boolean updateUser(Question question) {
+    public static boolean updateQuestion(Question question) {
         boolean valid = false;
         Realm realm = Realm.getDefaultInstance();
         if (question != null && isQuestion(question.getId())) {
@@ -140,6 +142,39 @@ public class QuestionModel {
         }
         return result;
     }
+
+    public static List<Question> questionquery(String campo,String value){
+        List<Question>question=null;
+        Realm realm = Realm.getDefaultInstance();
+
+        try{
+            realm.beginTransaction();
+            RealmQuery<Question> query = null;
+
+            if(campo=="tittle"){
+
+                query=realm.where(Question.class).like("tittle","*"+value+"*");
+            }
+
+            if(campo=="date"){
+                query=realm.where(Question.class).equalTo("date",value);
+            }
+
+            if(query!=null){
+                question=realm.copyFromRealm(query.findAll());
+            }
+            return question;
+
+        }catch (Exception e){
+            realm.close();
+            e.printStackTrace();
+
+        }
+
+        return question;
+    }
+
+
 
 
 }

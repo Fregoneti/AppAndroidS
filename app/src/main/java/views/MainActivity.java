@@ -29,12 +29,14 @@ import presenters.ListPresenter;
 
 public class MainActivity extends AppCompatActivity implements IList.View {
 
+    private static final int SEARCH = 0;
     private IList.Presenter presenter;
     private Context context;
     String TAG = "Foro de Preguntas /MainActivity";
     private ArrayList<Question> items;
     QuestionAdapter adapter;
     TextView number_question;
+    boolean questionsearched;
     Button btn;
     Question a, i, e, o, u, b, c, d, f, g;
 
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context = this;
+        questionsearched=false;
         presenter = new ListPresenter(this);
         final RecyclerView recyclerView = findViewById(R.id.recycled);
         items = new ArrayList<>();
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements IList.View {
     @Override
     public void startSearchActivity() {
         Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,SEARCH);
     }
 
     @Override
@@ -135,6 +138,48 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         Intent intent = new Intent(MainActivity.this, AboutActivity.class);
         startActivity(intent);
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "Starting onActivityResult...");
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String campo="";
+        String value="";
+
+        ArrayList<Question>questionsSearch=new ArrayList<Question>();
+        // Comprobamos si el resultado de la segunda actividad es "RESULT_CANCELED".
+        if (resultCode == RESULT_CANCELED) {
+            // Si es así mostramos mensaje de cancelado por pantalla.
+            Toast.makeText(this, "Resultado cancelado", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        // Comprobamos si el resultado de la segunda actividad es "RESULT_OK".
+        if(resultCode == RESULT_OK) {
+
+            if(data.getStringExtra("TITTLE")!=null){
+                 value =  data.getExtras().getString("TITTLE");
+                 campo="tittle";
+                System.out.println(value);
+            }
+           if(data.getStringExtra("DATE")!=null) {
+               value = data.getExtras().getString("DATE");
+               campo="date";
+
+           }
+           questionsearched=true;
+           //questionsSearch.clear();
+
+           items.clear();
+           items.addAll(presenter.getQuestionByQuery(campo,value));
+         //  items=questionsSearch
+            System.out.println(questionsSearch.size());
+            adapter.notifyDataSetChanged();
+
+
+        }
+    }
+
 
     @Override
     public void startFormularioActivity() {
@@ -175,15 +220,22 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         Log.d(TAG, "Starting onResume");
         super.onResume();
         int numberofquestions = items.size();
-        //items.removeAll(presenter.getAllUsers());
-        items.clear();
-        items.addAll(presenter.getAllQuestions());
+
+        /*items.clear();
+        items.addAll(presenter.getAllQuestions());*/
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recycled);
         // Muestra el RecyclerView en vertical
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         // Crea el Adaptador con los datos de la lista anterior
         adapter = new QuestionAdapter(items);
+
+        if (!questionsearched) {
+            items.clear();
+            items.addAll(presenter.getAllQuestions());
+            adapter.notifyDataSetChanged();
+        }
+
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,6 +250,12 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         String message = number_question.getText().toString();
         String text1=message.replace("" + numberofquestions, "" + items.size());
         number_question.setText(text1);
+/*
+        if (!questionsearched) {
+            items.clear();
+            items.addAll(presenter.getAllQuestions());
+            adapter.notifyDataSetChanged();
+        }*/
 
 
     }

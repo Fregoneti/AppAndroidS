@@ -3,10 +3,8 @@ package views;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import com.example.demo.R;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -16,14 +14,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
+import com.example.demo.R;
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.util.Calendar;
-import java.util.List;
 
 import interfaces.ISearch;
-import models.Question;
-import models.QuestionModel;
+import presenters.SearchPresenter;
 
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
 
@@ -36,6 +38,12 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     Button search;
     DatePickerDialog datePickerDialog;
     int Year, Month, Day;
+    String tittle;
+    String date;
+    TextInputEditText tittleS;
+    TextInputEditText dateS;
+    String spinnerr;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -43,18 +51,15 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         myContext = this;
-
-
+        presenter = new SearchPresenter(this);
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
         String[] letra = {"1 Option"};
 
-
+        tittleS = findViewById(R.id.textInputEditText2);
+      //  dateS = findViewById(R.id.input_fechaT);
 
 
         spinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, letra));
-
-
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -88,6 +93,7 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // Definir el calendario con la fecha seleccionada por defecto
                 datePickerDialog = new DatePickerDialog(myContext, new DatePickerDialog.OnDateSetListener() {
                     // Definir la acción al pulsar OK en el calendario
@@ -95,7 +101,19 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         // Asignar la fecha a un campo de texto
                         //editTextDate.setText(String.valueOf(day) + "/" + String.valueOf(month+1) + "/" + String.valueOf(year));
-                        editTextDate.setText((day) + "/" +(month+1) + "/" + (year));
+
+                        String day0 = "" + day;
+                        if (day < 10) {
+                            day0 = "0" + day;
+                        }
+                        String month0 = "" + (month + 1);
+                        if (month < 10) {
+                            month0 = "0" + month0;
+                        }
+
+                        editTextDate.setText(day0 + "/" + month0 + "/" + year);
+                        String s = day0 + "/" + month0 + "/" + year;
+
                     }
                 }, Year, Month, Day);
                 // Mostrar el calendario
@@ -105,19 +123,19 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
             }
         });
 
-
-
-        search = (Button)findViewById(R.id.searchp);
+        search = (Button) findViewById(R.id.searchp);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                presenter.onSearch();
                 presenter.onBack();
             }
         });
 
 
-    }
 
+
+    }
 
 
     @Override
@@ -128,11 +146,54 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
     }
 
 
-
     @Override
     public void goBack() {
-      finish();
+        finish();
     }
+
+    @Override
+    public void search() {
+
+        String temp = "";
+        Intent i = getIntent();
+
+        if (tittleS.getText().length() > 0
+
+                || !(editTextDate.getText().toString().equals(temp))) {
+            if (tittleS.getText().length() > 0) {
+                System.out.println(tittleS.getText().toString());
+                i.putExtra("TITTLE", tittleS.getText().toString());
+                System.out.println(tittleS.getText().toString());
+            }
+
+            if (editTextDate.getText().length() != 0) {
+                i.putExtra("DATE", editTextDate.getText().toString());
+            }
+
+            setResult(RESULT_OK, i);
+            finish();
+        } else {
+            //showMessageSearch();
+        }
+        /*
+        spinnerr = getResources().getString(R.string.spinner);
+        Intent intent = getIntent();
+
+        if(tittle.length()!=0) {
+            String tittle = tittleS.getText().toString();
+            intent.putExtra("TITTLE", tittle);
+        }
+
+        if (tittleS.getText().length() != 0) {
+            intent.putExtra("DATE", editTextDate.getText().toString());
+        }
+        setResult(RESULT_OK, intent);
+        finish();
+
+         */
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

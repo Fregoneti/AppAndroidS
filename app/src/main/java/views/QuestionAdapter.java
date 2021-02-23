@@ -40,7 +40,7 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
 
         public void QuestionBind(Question item) {
             tittle.setText((item.getTittle()));
-           // color.setText((item.getColour()));
+            color.setText((item.getColour()));
             if (item.getImage() != "") {
                 try {
                     byte[] decodedString = Base64.decode(item.getImage(), Base64.DEFAULT);

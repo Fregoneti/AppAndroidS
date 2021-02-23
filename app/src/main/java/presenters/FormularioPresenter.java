@@ -65,7 +65,7 @@ public class FormularioPresenter implements IFormulario.Presenter {
                 error_msg = App.getContext().getResources().getString(R.string.question_error);
                 break;
             default:
-                error_msg = "";
+                error_msg = "Error no se sabe donde";
 
         }
         return error_msg;
@@ -99,18 +99,15 @@ public class FormularioPresenter implements IFormulario.Presenter {
         int WriteExternalStoragePermission = ContextCompat.checkSelfPermission(App.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         Log.d(TAG, "clickImage" + WriteExternalStoragePermission);
         if (WriteExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            // Permiso denegado
-            // A partir de Marshmallow (6.0) se pide aceptar o rechazar el permiso en tiempo de ejecución
-            // En las versiones anteriores no es posible hacerlo
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 view.showPermission(0);
-                // Una vez que se pide aceptar o rechazar el permiso se ejecuta el método "onRequestPermissionsResult" para manejar la respuesta
-                // Si el usuario marca "No preguntar más" no se volverá a mostrar este diálogo
+
             } else {
                 view.showPermission(1);
             }
         } else {
-            // Permiso aceptado
+
             view.selectPicture();
         }
     }
@@ -119,11 +116,10 @@ public class FormularioPresenter implements IFormulario.Presenter {
     public void onClickSave(Question question) {
 
         Log.d(TAG, "Save Button Clicked");
-        // System.out.println(QuestionModel.isQuestion(question.getId()));
 
         if (QuestionModel.isQuestion(question.getId()) == true) {
             System.out.println(question.getId());
-            QuestionModel.updateUser(question);
+            QuestionModel.updateQuestion(question);
         } else {
             QuestionModel.insertQuestion(question);
         }

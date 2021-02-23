@@ -7,15 +7,18 @@ public interface ISearch {
         void startDatePicker();
 
         void goBack();
+
+        void search();
     }
 
     public interface Presenter {
 
         public void onClickDatePicker();
 
+        public void onClickAboutButton();
 
-
-        public void onClickAboutButton() ;
         void onBack();
+
+        void onSearch();
     }
 }

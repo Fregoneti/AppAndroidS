@@ -1,12 +1,15 @@
 package interfaces;
 
+import android.content.Intent;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Question;
 
 public interface IList {
 
-    public interface View {
+    interface View {
         void startFormularioActivity();
 
         void startFormularioActivity(String id);
@@ -15,14 +18,19 @@ public interface IList {
 
         void startAboutActivity();
 
+        void onActivityResult(int requestCode, int resultCode, Intent data);
 
     }
 
-    public interface Presenter {
+    interface Presenter {
         void onClickFloatingButton();
+
         void onClickQuestion(String id);
 
+        ArrayList<Question> getQuestionByQuery(String campo, String value);
+
         void onClickSearchButton();
+
         void SetItemsFirstTime();
 
         List<Question> getAllQuestions();

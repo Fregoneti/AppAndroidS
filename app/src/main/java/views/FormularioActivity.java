@@ -13,15 +13,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import com.example.demo.R;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.textfield.TextInputEditText;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -38,6 +29,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.app.ActivityCompat;
+
+import com.example.demo.R;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -50,7 +53,6 @@ import java.util.Date;
 import java.util.UUID;
 
 import interfaces.IFormulario;
-import io.realm.Realm;
 import models.Question;
 import models.QuestionModel;
 import presenters.FormularioPresenter;
@@ -90,7 +92,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     public Button clear;
     public Button save;
     public TextInputEditText editTextName;
-    public  ArrayList listMode=null;
+    public ArrayList listMode = null;
     private Spinner mode = null;
 
 
@@ -102,19 +104,19 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         setContentView(R.layout.activity_formulario);
         presenter = new FormularioPresenter(this);
         myContext = this;
-        id=null;
+        id = null;
 
         constraintLayoutFormActivity = findViewById(R.id.constraintl);
         editTextName = findViewById(R.id.textInputEditText2);
         add = findViewById(R.id.addSpinner);
-        idP= findViewById(R.id.textView15);
+        idP = findViewById(R.id.textView15);
         nameP = findViewById(R.id.textInputEditText2);
         mailP = findViewById(R.id.textInputEditText3);
         date = findViewById(R.id.textInputEditText4);
         titleP = findViewById(R.id.textInputEditText);
         colorP = findViewById(R.id.textInputEditText5);
         questionP = findViewById(R.id.editText);
-        photo=findViewById(R.id.imageView2);
+        photo = findViewById(R.id.imageView2);
         remove = (Button) findViewById(R.id.button3);
 
 
@@ -126,7 +128,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 presenter.onAddSpinner();
             }
         });
-
 
 
         Log.d(TAG, "Starting Toolbar");
@@ -181,27 +182,19 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
  */
 
-
-
-
         id = getIntent().getStringExtra("id");
 
 
         //Si  encuentra una pregunta con ID->El boton de borrar se activa, si no encuentra, se desactiva
-        if(id!=null){
-            exist=true;
+        if (id != null) {
+            exist = true;
             presenter.onAddParameters(id);
             remove.setEnabled(true);
 
-        }else{
-            exist=false;
+        } else {
+            exist = false;
             remove.setEnabled(false);
         }
-
-
-
-
-
 
 
         nameP.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -215,7 +208,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         nameP.setError("");
                     }
                 } else {
-                    Log.d("FormActivity", "Input EditText");
+                    Log.d("FormActivity", "Name is unfocused");
                 }
 
             }
@@ -226,14 +219,14 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus) {
-                    Log.d("FormActivity", "Exit EditText");
+                    Log.d("FormActivity", "mail has focused");
                     if (question.setMail(mailP.getText().toString()) == false) {
                         mailP.setError(presenter.getError("Email"));
                     } else {
                         mailP.setError("");
                     }
                 } else {
-                    Log.d("FormActivity", "Input EditText");
+                    Log.d("FormActivity", "Mail is unfocused");
                 }
 
             }
@@ -243,14 +236,16 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                                           @Override
                                           public void onFocusChange(View view, boolean hasFocus) {
                                               if (!hasFocus) {
-                                                  Log.d("FormActivity", "Exit EditText");
-                                                  if (question.setDate(date.getText().toString()) == false) {
+                                                  Log.d(TAG, "date has focused");
+                                                  //Comprobamos que el formato de la fecha es el correcto
+                                                  if (date.getText().toString().matches("")) {
+                                                      //Si la cadena está vacía no mostrará ningún error
                                                       date.setError(presenter.getError("Date"));
-                                                  } else {
-                                                      date.setError("");
+                                                  } else if (!(question.setDate((date.getText().toString())))) {
+
+                                                      date.setError(presenter.getError("Date"));
                                                   }
-                                              } else {
-                                                  Log.d("FormActivity", "Input EditText");
+                                                  Log.d(TAG, "Date is unfocused");
                                               }
                                           }
                                       }
@@ -268,7 +263,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         titleP.setError("");
                     }
                 } else {
-                    Log.d("FormActivity", "Input EditText");
+                    Log.d("FormActivity", "Tittle is unfocused");
                 }
             }
         });
@@ -285,7 +280,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         colorP.setError("");
                     }
                 } else {
-                    Log.d("FormActivity", "Input EditText");
+                    Log.d("FormActivity", "Colour is unfocused");
                 }
 
             }
@@ -303,13 +298,13 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         questionP.setError("");
                     }
                 } else {
-                    Log.d("FormActivity", "Input EditText");
+                    Log.d("FormActivity", "Question is unfocused");
                 }
             }
         });
 
 
-        if(exist==true){
+        if (exist == true) {
 
 
             remove.setOnClickListener(new View.OnClickListener() {
@@ -348,8 +343,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 }
             });
 
-        }else{
-          //  remove.setEnabled(false);
+        } else {
+            //  remove.setEnabled(false);
         }
 
 
@@ -358,7 +353,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         Year = calendar.get(Calendar.YEAR);
         Month = calendar.get(Calendar.MONTH);
         Day = calendar.get(Calendar.DAY_OF_MONTH);
-
 
 
         editTextDate = (EditText) findViewById(R.id.textInputEditText4);
@@ -386,7 +380,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                         }
 
                         editTextDate.setText(day0 + "/" + month0 + "/" + year);
-                        String s=day0 + "/" + month0 + "/" + year;
+                        String s = day0 + "/" + month0 + "/" + year;
 
                     }
                 }, Year, Month, Day);
@@ -397,16 +391,19 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
+
+        //Boton abrir galeria
         Gallery = (ImageView) findViewById(R.id.imageView13);
         Gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 boolean valid = false;
                 presenter.onClickImage();
-                //presenter.selectPicture();
+
             }
         });
 
+        //Boton abrir camara
         Camera = findViewById(R.id.imageView12);
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)) {
             Camera.setEnabled(false);
@@ -429,6 +426,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             });
         }
 
+        //Boton limpiar imagen
 
         clear = findViewById(R.id.button4);
         add.setOnClickListener(new View.OnClickListener() {
@@ -438,6 +436,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             }
         });
 
+
+        //Boton reset
         Button reset = findViewById(R.id.button);
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -445,7 +445,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 presenter.onResetElements();
             }
         });
-
 
 
         //Boton añadir del spinner
@@ -466,7 +465,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             public void onClick(View view) {
 
                 String result = null;
-                boolean valid=true;
+                boolean valid = true;
                 try {
                     BitmapDrawable drawable = (BitmapDrawable) photo.getDrawable();
                     if (drawable == null) {
@@ -485,9 +484,9 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                     question.setImage(result);
                 }
 
-                if(exist==false) {
+                if (exist == false) {
                     question.setId(UUID.randomUUID().toString());
-                }else{
+                } else {
                     question.setId(idP.getText().toString());
                 }
 
@@ -498,55 +497,54 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
                 }
 
 
-                if(nameP.getText().toString().equals("")){
+                if (nameP.getText().toString().equals("")) {
                     presenter.onshowFormuAlert(1);
-                    valid=false;
-                }else{
+                    valid = false;
+                } else {
                     question.setName(nameP.getText().toString());
                 }
 
 
-                if(editTextDate.getText().toString().equals("")){
+                if (editTextDate.getText().toString().equals("")) {
                     presenter.onshowFormuAlert(2);
-                    valid=false;
-                }else{
+                    valid = false;
+                } else {
                     question.setDate(editTextDate.getText().toString());
                 }
 
-                if(mailP.getText().toString().equals("")){
+                if (mailP.getText().toString().equals("")) {
                     presenter.onshowFormuAlert(3);
-                    valid=false;
-                }else{
+                    valid = false;
+                } else {
                     question.setMail(mailP.getText().toString());
                 }
 
-                if(titleP.getText().toString().equals("")){
+                if (titleP.getText().toString().equals("")) {
                     presenter.onshowFormuAlert(4);
-                    valid=false;
-                }else{
+                    valid = false;
+                } else {
                     question.setTittle(titleP.getText().toString());
                 }
 
-                if(colorP.getText().toString().equals("")){
+                if (colorP.getText().toString().equals("")) {
                     presenter.onshowFormuAlert(5);
-                    valid=false;
-                }else{
+                    valid = false;
+                } else {
                     question.setColour(colorP.getText().toString());
                 }
 
 
-
-                if(questionP.getText().toString().equals("")){
+                if (questionP.getText().toString().equals("")) {
                     presenter.onshowFormuAlert(5);
-                    valid=false;
-                }else{
+                    valid = false;
+                } else {
                     question.setQuestion(questionP.getText().toString());
                 }
 
-                if(valid==true){
+                if (valid == true) {
                     presenter.onClickSave(question);
                     presenter.onStartMainActivity();
-                }else{
+                } else {
                     presenter.onshowFormuAlert(8);
                 }
 
@@ -565,7 +563,6 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     public void onGoBack() {
         finish();
     }
-
 
 
     @Override
@@ -654,7 +651,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
             StrictMode.setVmPolicy(builder.build());
             uri = Uri.fromFile(fileFoto);
-            Log.d(TAG, uri.getPath().toString());
+            Log.d(TAG, uri.getPath());
 
             // Se crea la comunicación con la cámara
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -690,16 +687,20 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     //Toast para saltar errores en el formulario
     @Override
     public void showFormuAlert(int n) {
-        switch (n){
+        switch (n) {
 
-            case 1: Toast.makeText(myContext, "Error al introducir nombre", Toast.LENGTH_SHORT).show();
-            case 2:Toast.makeText(myContext, "Error al introducir fecha", Toast.LENGTH_SHORT).show();
-            case 3:Toast.makeText(myContext, "Error al introducir correo", Toast.LENGTH_SHORT).show();
-            case 4:Toast.makeText(myContext, "Error al introducir título", Toast.LENGTH_SHORT).show();
-            case 5:Toast.makeText(myContext, "Error al introducir color", Toast.LENGTH_SHORT).show();
-            case 8:Toast.makeText(myContext, "Error al guardar", Toast.LENGTH_SHORT).show();
-
-
+            case 1:
+                Toast.makeText(myContext, "Error al introducir nombre", Toast.LENGTH_SHORT).show();
+            case 2:
+                Toast.makeText(myContext, "Error al introducir fecha", Toast.LENGTH_SHORT).show();
+            case 3:
+                Toast.makeText(myContext, "Error al introducir correo", Toast.LENGTH_SHORT).show();
+            case 4:
+                Toast.makeText(myContext, "Error al introducir título", Toast.LENGTH_SHORT).show();
+            case 5:
+                Toast.makeText(myContext, "Error al introducir color", Toast.LENGTH_SHORT).show();
+            case 8:
+                Toast.makeText(myContext, "Error al guardar", Toast.LENGTH_SHORT).show();
 
 
         }
@@ -743,6 +744,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
 
     }
+
     //Comienza actividad main
     @Override
     public void startMainActivity() {
@@ -805,7 +807,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
 
     @Override
     public Question searchQuestionById(String id) {
-       return QuestionModel.searchQuestionById(id);
+        return QuestionModel.searchQuestionById(id);
     }
 
 

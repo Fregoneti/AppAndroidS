@@ -26,4 +26,10 @@ public class SearchPresenter implements ISearch.Presenter {
 
     @Override
     public void onBack() { view.goBack();}
+
+    @Override
+    public void onSearch() {view.search();
+
+
+    }
 }
