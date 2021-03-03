@@ -85,16 +85,16 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
 
                 switch (outsideActivity) {
                     case "main":
-
+                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/main");
                         break;
                     case "formulario":
-
+                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/formulario");
                         break;
                     case "search":
-
+                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/search");
                         break;
                 }
-                mWebview.loadUrl("http://www.google.com");
+
                 setContentView(mWebview);
 
             }
