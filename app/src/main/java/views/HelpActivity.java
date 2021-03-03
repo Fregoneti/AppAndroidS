@@ -85,17 +85,17 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
 
                 switch (outsideActivity) {
                     case "main":
-                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/main");
+                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/main.html");
                         break;
                     case "formulario":
-                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/formulario");
+                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/formulario.html");
                         break;
                     case "search":
-                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/search");
+                        mWebview.loadUrl("https://fregoneti.github.io/AppAndroidS/search.html");
                         break;
                 }
 
-                setContentView(mWebview);
+               // setContentView(mWebview);
 
             }
         } else {
@@ -145,6 +145,7 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
+        mWebview = findViewById(R.id.webview);
 
         return (actNetInfo != null && actNetInfo.isConnected());
     }

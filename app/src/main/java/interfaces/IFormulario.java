@@ -1,14 +1,12 @@
 package interfaces;
 
-import android.content.Intent;
-
 import java.util.ArrayList;
 
 import models.Question;
 
 public interface IFormulario {
 
-    public interface View {
+    interface View {
 
         void onGoBack();
 
@@ -36,14 +34,17 @@ public interface IFormulario {
         void deleteQuestion(String id);
 
         Question searchQuestionById(String id);
+
+        void clickHelpButton();
     }
 
-    public interface Presenter {
+    interface Presenter {
 
+        void onClickHelpButton();
 
-       ArrayList getSpinner();
+        ArrayList getSpinner();
 
-       void onDeleteQuestion(String id);
+        void onDeleteQuestion(String id);
 
         void goBack();
 
@@ -60,6 +61,7 @@ public interface IFormulario {
         void onClickImage();
 
         void onClickSave(Question question);
+
         void onshowFormuAlert(int n);
 
         void onAddParameters(String id);

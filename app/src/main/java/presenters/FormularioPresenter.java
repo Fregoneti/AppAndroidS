@@ -29,6 +29,11 @@ public class FormularioPresenter implements IFormulario.Presenter {
 
 
     @Override
+    public void onClickHelpButton() {
+        view.clickHelpButton();
+    }
+
+    @Override
     public ArrayList getSpinner() {
         return QuestionModel.getSpinner();
     }

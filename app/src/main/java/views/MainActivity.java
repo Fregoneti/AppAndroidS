@@ -180,6 +180,14 @@ public class MainActivity extends AppCompatActivity implements IList.View {
         }
     }
 
+    @Override
+    public void clickHelpButton() {
+        Log.d(TAG, "Starting Help Activity");
+        Intent intent = new Intent(MainActivity.this, HelpActivity.class);
+        intent.putExtra("activity","main");
+        startActivity(intent);
+    }
+
 
     @Override
     public void startFormularioActivity() {
@@ -211,6 +219,13 @@ public class MainActivity extends AppCompatActivity implements IList.View {
             Log.d(TAG, "Menu About click");
             presenter.onClickAboutButton();
         }
+
+        if (id == R.id.help) {
+            Log.d(TAG, "Menu Help click");
+            presenter.onClickHelpButton();
+        }
+
+
 
         return super.onOptionsItemSelected(item);
     }

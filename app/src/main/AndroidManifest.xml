@@ -33,6 +33,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name="views.HelpActivity"
+            android:label="@string/help"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name="views.FormularioActivity"
             android:label="@string/form"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -41,6 +46,7 @@
             android:name="views.AboutActivity"
             android:label="@string/about"
             android:theme="@style/AppTheme.NoActionBar" />
+
 
         <activity
             android:name="views.SearchActivity"

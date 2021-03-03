@@ -816,5 +816,13 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         return QuestionModel.searchQuestionById(id);
     }
 
+    @Override
+    public void clickHelpButton() {
+        Log.d(TAG, "Starting Help Activity");
+        Intent intent = new Intent(FormularioActivity.this, HelpActivity.class);
+        intent.putExtra("activity","formulario");
+        startActivity(intent);
+    }
+
 
 }

@@ -30,7 +30,7 @@ import presenters.SearchPresenter;
 public class SearchActivity extends AppCompatActivity implements ISearch.View {
 
     private ISearch.Presenter presenter;
-
+    public String TAG = "Foro de Preguntas/SearchActivity";
     Context myContext;
     EditText editTextDate;
     ImageView buttonDate;
@@ -192,6 +192,14 @@ public class SearchActivity extends AppCompatActivity implements ISearch.View {
 
          */
 
+    }
+
+    @Override
+    public void clickHelpButton() {
+        Log.d(TAG, "Starting Help Activity");
+        Intent intent = new Intent(SearchActivity.this, HelpActivity.class);
+        intent.putExtra("activity","main");
+        startActivity(intent);
     }
 
     @Override

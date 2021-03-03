@@ -32,4 +32,9 @@ public class SearchPresenter implements ISearch.Presenter {
 
 
     }
+
+    @Override
+    public void onClickHelpButton() {
+        view.clickHelpButton();
+    }
 }

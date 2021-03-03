@@ -48,6 +48,12 @@ public class ListPresenter implements IList.Presenter {
         view.startAboutActivity();
 
     }
+
+    @Override
+    public void onClickHelpButton() {
+        view.clickHelpButton();
+    }
+
     @Override
     public void SetItemsFirstTime() {
 

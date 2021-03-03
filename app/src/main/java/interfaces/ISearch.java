@@ -9,6 +9,8 @@ public interface ISearch {
         void goBack();
 
         void search();
+
+        void clickHelpButton();
     }
 
     public interface Presenter {
@@ -20,5 +22,7 @@ public interface ISearch {
         void onBack();
 
         void onSearch();
+
+        void onClickHelpButton();
     }
 }

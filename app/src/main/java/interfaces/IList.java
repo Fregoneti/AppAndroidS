@@ -20,6 +20,8 @@ public interface IList {
 
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
+        void clickHelpButton();
+
     }
 
     interface Presenter {
@@ -36,5 +38,7 @@ public interface IList {
         List<Question> getAllQuestions();
 
         void onClickAboutButton();
+
+        void onClickHelpButton();
     }
 }
