@@ -6,19 +6,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.webkit.WebView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import com.example.demo.R;
-import interfaces.IAbout;
 
+import com.example.demo.R;
+
+import interfaces.IAbout;
 import interfaces.ISearch;
 
 public class AboutActivity extends AppCompatActivity implements IAbout.View {
 
     private ISearch.Presenter presenter;
-
     Context myContext;
-
 
 
     @Override
@@ -28,7 +29,7 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
         myContext = this;
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -44,6 +45,7 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
         } else {
             Log.d("SobreNosotros", "Error al cargar toolbar");
         }
+
 
     }
 
@@ -64,3 +66,6 @@ public class AboutActivity extends AppCompatActivity implements IAbout.View {
 
 
 }
+
+
+

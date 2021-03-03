@@ -72,6 +72,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
     public TextInputEditText colorP;
     public TextInputEditText questionP;
     public Button add;
+    boolean foto;
     public ImageView photo;
     public Button remove;
     public Calendar calendar;
@@ -105,6 +106,7 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         presenter = new FormularioPresenter(this);
         myContext = this;
         id = null;
+        foto=false;
 
         constraintLayoutFormActivity = findViewById(R.id.constraintl);
         editTextName = findViewById(R.id.textInputEditText2);
@@ -392,6 +394,8 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
         });
 
 
+
+
         //Boton abrir galeria
         Gallery = (ImageView) findViewById(R.id.imageView13);
         Gallery.setOnClickListener(new View.OnClickListener() {
@@ -399,9 +403,11 @@ public class FormularioActivity extends AppCompatActivity implements IFormulario
             public void onClick(View view) {
                 boolean valid = false;
                 presenter.onClickImage();
+                foto=true;
 
             }
         });
+
 
         //Boton abrir camara
         Camera = findViewById(R.id.imageView12);
