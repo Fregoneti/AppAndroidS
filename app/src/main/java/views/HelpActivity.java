@@ -1,5 +1,5 @@
 package views;
-
+import androidx.appcompat.widget.Toolbar;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -12,7 +12,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-import android.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 
@@ -152,6 +151,6 @@ public class HelpActivity extends AppCompatActivity implements IHelp.View {
 
     @Override
     public void errorConnection() {
-        
+
     }
 }
