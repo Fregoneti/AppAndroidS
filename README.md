@@ -18,17 +18,17 @@ Tan fácil como descargar la ultima release, ejecutarla, permitir que instale AP
 
 Esta App esta creada con Android Studio y los htmls con Visual Studio Code
 
-##Ayuda
+## Ayuda
 A través del siguiente enlace, se podrá encontrar la ayuda para la utilización de cada apartado de la App --> https://fregoneti.github.io/AppAndroidS/index.html
 
-##Releases 📖
+## Releases 📖
 A través del siguiente enlace, se podra descargar la versión más estable de la App --> https://github.com/Fregoneti/AppAndroidS/releases/tag/1.0
 
-##Autor  ✒️
+## Autor  ✒️
 Carlos Aguilar Alférez
 
-##Github
+## Github
 https://github.com/Fregoneti/
 
-
+## Info
 ⌨️ con ❤️ por [CarlosAguilarAlférez](https://github.com/Fregoneti/) 😊
